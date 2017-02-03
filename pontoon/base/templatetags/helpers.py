@@ -109,6 +109,11 @@ def naturaltime(source):
 
 
 @library.filter
+def intcomma(source):
+    return humanize.intcomma(source)
+
+
+@library.filter
 def display_permissions(self):
     output = 'Can make suggestions'
 
@@ -123,17 +128,32 @@ def display_permissions(self):
 
 
 @library.filter
-def format_datetime(value, format='full'):
+def date_status(value):
+    """Get date status relative to today."""
+    if isinstance(value, datetime.date):
+        today = datetime.date.today()
+        if value < today:
+            return 'overdue'
+        elif (value - today).days < 8:
+            return 'approaching'
+
+    return 'normal'
+
+
+@library.filter
+def format_datetime(value, format='full', default='---'):
     if value is not None:
         if format == 'full':
             format = '%A, %B %d, %Y at %H:%M %Z'
         elif format == 'date':
             format = '%B %d, %Y'
+        elif format == 'short_date':
+            format = '%b %d, %Y'
         elif format == 'time':
             format = '%H:%M %Z'
         return value.strftime(format)
     else:
-        return '---'
+        return default
 
 
 @library.filter

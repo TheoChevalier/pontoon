@@ -2543,12 +2543,9 @@ var Pontoon = (function (my) {
     attachMainHandlers: function () {
       var self = this;
 
-      // Hide menus on click outside
+      // iFrame fix on hiding menus
       $('body').bind("click.main", function (e) {
-        $('.menu').hide();
-        $('#iframe-cover').hide(); // iframe fix
-        $('.select').removeClass('opened');
-        $('.menu li').removeClass('hover');
+        $('#iframe-cover').hide();
       });
 
       // Locale menu handler
@@ -2580,7 +2577,22 @@ var Pontoon = (function (my) {
 
       // Show only projects available for the selected locale
       $('.project .selector').click(function () {
-        self.requestProjects.toggleProjects(true);
+        var projects = Pontoon.getLocaleData('projects'),
+            $menu = $(this).parents('.select').find('.menu');
+
+        // Hide all projects
+        $menu.find('li')
+          .toggleClass('limited', false)
+          .toggle(false);
+
+        // Show requested projects
+        $(projects).each(function() {
+          $menu
+              .find('.name[data-slug="' + this + '"]')
+            .parent()
+              .toggleClass('limited', true)
+              .toggle(true);
+        });
       });
 
       // Project menu handler

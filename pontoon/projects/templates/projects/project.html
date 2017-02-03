@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% import "widgets/menu.html" as Menu %}
+
+{% block title %}Pontoon &middot; {{ project.name }}{% endblock %}
+
+{% block class %}project{% endblock %}
+
+{% block before %}
+<!-- Server data -->
+<div id="server"
+     class="hidden"
+     {% if csrf_token %}data-csrf="{{ csrf_token }}"{% endif %}
+     data-url-split="projects/{{ project.slug }}">
+</div>
+{% endblock %}
+
+{% block heading %}
+<section id="heading">
+  <div class="container">
+    <div class="charts clearfix">
+      <div class="data">
+        <h1 class="heading">
+          <a href="{{ url('pontoon.projects.project', project.slug) }}">{{ project.name }}</a>
+        </h1>
+        <ul class="details">
+          <li class="priority">
+            <span class="title">Priority</span>
+            <span class="value">
+              {% for n in range(5) %}
+                <span class="fa fa-star{% if loop.index <= project.priority %}{{ ' active' }}{% endif %}"></span>
+              {% endfor %}
+            </span>
+          </li>
+          <li class="deadline">
+            <span class="title">Deadline</span>
+            <span class="value">
+              <time datetime="{% if project.deadline %}{{ project.deadline.isoformat() }}{% endif %}" class="{{ project.deadline|date_status }}">{{ project.deadline|format_datetime('short_date', default='Not set') }}</time>
+            </span>
+          </li>
+          {% if project.url %}
+          <li class="website">
+            <span class="title">Website</span>
+            <span class="value">{{ project.url }}</span>
+          </li>
+          {% endif %}
+        </ul>
+        <div class="progress clearfix">
+          <div class="chart-wrapper">
+            <canvas class="chart" height="110" width="110"></canvas>
+            <span class="number noselect"></span>
+          </div>
+          <div class="legend">
+            <ul>
+              <li class="translated">
+                <span class="fa status"></span>
+                Translated
+                <span class="value" data-value="{{ project.approved_strings }}">{{ project.approved_strings|intcomma }}</span>
+              </li>
+              <li class="suggested">
+                <span class="fa status"></span>
+                Suggested
+                <span class="value" data-value="{{ project.translated_strings }}">{{ project.translated_strings|intcomma }}</span>
+              </li>
+              <li class="fuzzy">
+                <span class="fa status"></span>
+                Fuzzy
+                <span class="value" data-value="{{ project.fuzzy_strings }}">{{ project.fuzzy_strings|intcomma }}</span>
+              </li>
+              <li class="missing">
+                <span class="fa status"></span>
+                Missing
+                {% set missing_strings = project.total_strings - project.approved_strings - project.translated_strings - project.fuzzy_strings %}
+                <span class="value" data-value="{{ missing_strings }}">{{ missing_strings|intcomma }}</span>
+              </li>
+              <li class="all">
+                All strings
+                <span class="value" data-value="{{ project.total_strings }}">{{ project.total_strings|intcomma }}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline">
+        <div class="chart"></div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block middle %}
+<section id="middle" class="submenu tabs">
+  <div class="container">
+    {% set current_page = request.path.split('/')[2]|default('') %}
+    {% call Menu.submenu() %}
+      {{ Menu.item(
+          'Projects',
+          url('pontoon.projects.project', project.slug),
+          is_active = (current_page == ''),
+          count = project.locales.count()
+        )
+      }}
+      {{ Menu.item(
+          'Contributors',
+          url('pontoon.projects.contributors', project.slug),
+          is_active = (current_page == 'contributors'),
+          count = False if request.GET.period else project.contributors.count()
+        )
+      }}
+      {{ Menu.item(
+          'Info',
+          url('pontoon.projects.info', project.slug),
+          is_active = (current_page == 'info'),
+          count = False
+        )
+      }}
+    {% endcall %}
+  </div>
+</section>
+{% endblock %}
+
+{% block bottom %}
+<section id="main" class="clearfix">
+  <div class="container">
+
+  </div>
+</section>
+{% endblock %}
+
+{% block extend_css %}
+  {% stylesheet 'project' %}
+{% endblock %}
+
+{% block extend_js %}
+  {% javascript 'project' %}
+{% endblock %}

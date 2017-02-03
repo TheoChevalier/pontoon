@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+{% import "widgets/menu.html" as Menu %}
+
+{% block title %}Pontoon &middot; {{ locale.name }} ({{ locale.code }}) &middot; {{ project.name }}{% endblock %}
+
+{% block class %}localization{% endblock %}
+
+{% block before %}
+<!-- Server data -->
+<div id="server"
+     class="hidden"
+     {% if csrf_token %}data-csrf="{{ csrf_token }}"{% endif %}
+     data-url-split="{{ locale.code }}/{{ project.slug }}">
+</div>
+{% endblock %}
+
+{% block heading %}
+<section id="heading">
+  <div class="container">
+    <div class="charts clearfix">
+      <div class="data">
+        <h1 class="heading">
+          <a href="{{ url('pontoon.projects.project', project.slug) }}">{{ project.name }}</a>
+          <a class="small" href="{{ url('pontoon.teams.team', locale.code) }}">{{ locale.name }}</a>
+        </h1>
+        <ul class="details">
+          <li class="priority">
+            <span class="title">Priority</span>
+            <span class="value">
+              {% for n in range(5) %}
+                <span class="fa fa-star{% if loop.index <= project.priority %}{{ ' active' }}{% endif %}"></span>
+              {% endfor %}
+            </span>
+          </li>
+          <li class="deadline">
+            <span class="title">Deadline</span>
+            <span class="value">
+              <time datetime="{% if project.deadline %}{{ project.deadline.isoformat() }}{% endif %}" class="{{ project.deadline|date_status }}">{{ project.deadline|format_datetime('short_date', default='Not set') }}</time>
+            </span>
+          </li>
+          {% if project.url %}
+          <li class="website">
+            <span class="title">Website</span>
+            <span class="value">{{ project.url }}</span>
+          </li>
+          {% endif %}
+        </ul>
+        <div class="progress clearfix">
+          <div class="chart-wrapper">
+            <canvas class="chart" height="110" width="110"></canvas>
+            <span class="number noselect"></span>
+          </div>
+          <div class="legend">
+            <ul>
+              {% set link = url('pontoon.translate', locale.code, project.slug, 'all-resources') %}
+              <li class="translated">
+                <a href="{{ link }}?status=translated">
+                  <span class="fa status"></span>
+                  Translated
+                  <span class="value" data-value="{{ project_locale.approved_strings }}">{{ project_locale.approved_strings|intcomma }}</span>
+                </a>
+              </li>
+              <li class="suggested">
+                <a href="{{ link }}?status=suggested">
+                  <span class="fa status"></span>
+                  Suggested
+                  <span class="value" data-value="{{ project_locale.translated_strings }}">{{ project_locale.translated_strings|intcomma }}</span>
+                </a>
+              </li>
+              <li class="fuzzy">
+                <a href="{{ link }}?status=fuzzy">
+                  <span class="fa status"></span>
+                  Fuzzy
+                  <span class="value" data-value="{{ project_locale.fuzzy_strings }}">{{ project_locale.fuzzy_strings|intcomma }}</span>
+                </a>
+              </li>
+              <li class="missing">
+                <a href="{{ link }}?status=missing">
+                  <span class="fa status"></span>
+                  Missing
+                  {% set missing_strings = project_locale.total_strings - project_locale.approved_strings - project_locale.translated_strings - project_locale.fuzzy_strings %}
+                  <span class="value" data-value="{{ missing_strings }}">{{ missing_strings|intcomma }}</span>
+                </a>
+              </li>
+              <li class="all">
+                <a href="{{ link }}">
+                  All strings
+                  <span class="value" data-value="{{ project_locale.total_strings }}">{{ project_locale.total_strings|intcomma }}</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline">
+        <div class="chart"></div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block middle %}
+<section id="middle" class="submenu tabs">
+  <div class="container">
+    {% set current_page = request.path.split('/')[2]|default('') %}
+    {% call Menu.submenu() %}
+      {{ Menu.item(
+          'Resources',
+          url('pontoon.localizations.localization', locale.code, project.slug),
+          is_active = (current_page == ''),
+          count = resource_count
+        )
+      }}
+      {{ Menu.item(
+          'Project Info',
+          url('pontoon.localizations.project-info', locale.code, project.slug),
+          is_active = (current_page == 'project-info'),
+          count = False
+        )
+      }}
+      {{ Menu.item(
+          'Team Info',
+          url('pontoon.localizations.team-info', locale.code, project.slug),
+          is_active = (current_page == 'team-info'),
+          count = False
+        )
+      }}
+    {% endcall %}
+  </div>
+</section>
+{% endblock %}
+
+{% block bottom %}
+<section id="main" class="clearfix">
+  <div class="container">
+
+  </div>
+</section>
+{% endblock %}
+
+{% block extend_css %}
+  {% stylesheet 'localization' %}
+{% endblock %}
+
+{% block extend_js %}
+  {% javascript 'localization' %}
+{% endblock %}

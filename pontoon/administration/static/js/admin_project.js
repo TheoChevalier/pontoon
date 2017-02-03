@@ -45,7 +45,7 @@ $(function() {
     button.addClass('in-progress').html('Syncing...');
 
     $.ajax({
-      url: '/projects/' + $('#id_slug').val() + '/sync/'
+      url: '/admin/projects/' + $('#id_slug').val() + '/sync/'
     }).success(function() {
       button.html('Sync started');
     }).error(function() {

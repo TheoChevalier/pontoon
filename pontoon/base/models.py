@@ -436,6 +436,23 @@ class Locale(AggregatedStats):
         """
     )
 
+    script = models.CharField(max_length=128, default='Latin')
+
+    population = models.PositiveIntegerField(default=0, help_text="""
+        Number of native speakers.
+    """)
+
+    # Writing direction
+    DIRECTION = (
+        ('ltr', 'left-to-right'),
+        ('rtl', 'right-to-left'),
+    )
+    direction = models.CharField(
+        max_length=3,
+        default='ltr',
+        choices=DIRECTION
+    )
+
     # Locale contains references to user groups that translate or manage them.
     # Groups store respective permissions for users.
     translators_group = models.ForeignKey(Group, related_name='translated_locales', null=True,
@@ -593,6 +610,10 @@ class Locale(AggregatedStats):
 
         return locale_projects
 
+    @property
+    def contributors(self, start_date=None):
+        return User.translators.with_translation_counts(start_date, Q(translation__locale=self))
+
     def available_projects_list(self):
         """Get a list of available project slugs."""
         return list(
@@ -718,6 +739,7 @@ class Locale(AggregatedStats):
         return details_list
 
 
+
 class ProjectQuerySet(models.QuerySet):
     def available(self):
         """
@@ -725,6 +747,15 @@ class ProjectQuerySet(models.QuerySet):
         resource defined.
         """
         return self.filter(disabled=False, resources__isnull=False).distinct()
+
+
+PRIORITY_CHOICES = (
+    (1, 'Lowest'),
+    (2, 'Low'),
+    (3, 'Normal'),
+    (4, 'High'),
+    (5, 'Highest'),
+)
 
 
 class Project(AggregatedStats):
@@ -751,6 +782,9 @@ class Project(AggregatedStats):
 
     # Disable project instead of deleting to keep translation memory & attributions
     disabled = models.BooleanField(default=False)
+
+    deadline = models.DateField(blank=True, null=True)
+    priority = models.IntegerField(choices=PRIORITY_CHOICES, default=3)
 
     # Most recent translation approved or created for this project.
     latest_translation = models.ForeignKey(
@@ -917,6 +951,10 @@ class Project(AggregatedStats):
                     return repo
 
         return self.repositories.first()
+
+    @property
+    def contributors(self, start_date=None):
+        return User.translators.with_translation_counts(start_date, Q(translation__entity__resource__project=self))
 
     def translation_repositories(self):
         """
@@ -1310,14 +1348,6 @@ class Resource(models.Model):
         "Format", max_length=20, blank=True, choices=FORMAT_CHOICES)
 
     deadline = models.DateField(blank=True, null=True)
-
-    PRIORITY_CHOICES = (
-        (1, 'Lowest'),
-        (2, 'Low'),
-        (3, 'Normal'),
-        (4, 'High'),
-        (5, 'Highest'),
-    )
     priority = models.IntegerField(choices=PRIORITY_CHOICES, default=3)
 
     SOURCE_EXTENSIONS = ['pot']  # Extensions of source-only formats.
@@ -1334,6 +1364,13 @@ class Resource(models.Model):
 
     def __unicode__(self):
         return '%s: %s' % (self.project.name, self.path)
+
+    def save(self, *args, **kwargs):
+        super(Resource, self).save(*args, **kwargs)
+
+        if self.deadline < self.project.deadline:
+            self.project.deadline = self.deadline
+            self.project.save()
 
     @classmethod
     def get_path_format(self, path):
@@ -1800,9 +1837,19 @@ class Translation(DirtyFieldsMixin, models.Model):
         this translation.
         """
         if self.approved_date is not None and self.approved_date > self.date:
-            return {'date': self.approved_date, 'user': self.approved_user}
+            return {
+                'translation': self,
+                'date': self.approved_date,
+                'user': self.approved_user,
+                'type': 'approved',
+            }
         else:
-            return {'date': self.date, 'user': self.user}
+            return {
+                'translation': self,
+                'date': self.date,
+                'user': self.user,
+                'type': 'submitted',
+            }
 
     def __unicode__(self):
         return self.string

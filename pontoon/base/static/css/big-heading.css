@@ -1,0 +1,98 @@
+ul {
+  list-style: none;
+  margin: 0;
+}
+
+.charts > div {
+  height: 280px;
+}
+
+.data {
+  float: left;
+  position: relative;
+  width: 300px;
+}
+
+.data h1 a {
+  color: #EBEBEB;
+  font-weight: bold;
+  font-size: 32px;
+}
+
+.data h1 .small {
+  color: #7BC876;
+  font-weight: 100;
+  padding-left: 1px;
+}
+
+.details li {
+  font-size: 12px;
+  line-height: 1em;
+  padding-top: 10px;
+}
+
+.details .title {
+  color: #AAAAAA;
+  padding-right: 5px;
+  text-transform: uppercase;
+}
+
+.details .literate-speakers .title {
+  float: left;
+  margin-top: -4px;
+}
+
+.data .details .value {
+  float: right;
+}
+
+.data .progress {
+  bottom: 0;
+  position: absolute;
+  text-align: center;
+}
+
+.data .progress .chart-wrapper {
+  position: relative;
+  float: left;
+  width: 110px;
+}
+
+.data .progress .legend {
+  float: right;
+  font-size: 12px;
+  width: 190px;
+}
+
+.data .progress .number {
+  font-size: 45px;
+  font-weight: bold;
+  left: 0;
+  right: 0;
+  top: 20px;
+  margin: 0;
+  position: absolute;
+}
+
+.data .progress .number:after {
+  content: "%";
+  color: #888888;
+  display: block;
+  font-size: 18px;
+  font-weight: 100;
+  line-height: 10px;
+}
+
+.charts .timeline {
+  float: right;
+  width: 620px;
+}
+
+.charts .timeline .chart {
+  height: 278px;
+  width: 100%;
+}
+
+.controls > .search-wrapper.small input {
+  width: 125px;
+}
