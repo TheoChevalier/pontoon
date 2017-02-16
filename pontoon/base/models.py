@@ -511,14 +511,19 @@ class Locale(AggregatedStats):
             'name': self.name,
             'nplurals': self.nplurals,
             'plural_rule': self.plural_rule,
-            'cldr_plurals': self.cldr_plurals_list(),
+            'cldr_plurals': self.cldr_id_list(),
         }
 
-    def cldr_plurals_list(self):
+    def cldr_id_list(self):
         if self.cldr_plurals == '':
             return [1]
         else:
             return map(int, self.cldr_plurals.split(','))
+
+    def cldr_plurals_list(self):
+        return ', '.join(
+            map(Locale.cldr_id_to_plural, self.cldr_id_list())
+        )
 
     @classmethod
     def cldr_plural_to_id(self, cldr_plural):
@@ -534,7 +539,7 @@ class Locale(AggregatedStats):
 
     @property
     def nplurals(self):
-        return len(self.cldr_plurals_list())
+        return len(self.cldr_id_list())
 
     @property
     def projects_permissions(self):
@@ -623,14 +628,14 @@ class Locale(AggregatedStats):
     def get_plural_index(self, cldr_plural):
         """Returns plural index for given cldr name."""
         cldr_id = Locale.cldr_plural_to_id(cldr_plural)
-        return self.cldr_plurals_list().index(cldr_id)
+        return self.cldr_id_list().index(cldr_id)
 
     def get_relative_cldr_plural(self, plural_id):
         """
         Every locale supports a subset (a list) of The CLDR Plurals forms.
         In code, we store their relative position.
         """
-        return Locale.cldr_id_to_plural(self.cldr_plurals_list()[plural_id])
+        return Locale.cldr_id_to_plural(self.cldr_id_list()[plural_id])
 
     def get_latest_activity(self, project=None):
         return ProjectLocale.get_latest_activity(self, project)

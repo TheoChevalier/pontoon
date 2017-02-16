@@ -18,69 +18,64 @@
 
 {% block heading %}
 <section id="heading">
-  <div class="container">
-    <div class="charts clearfix">
-      <div class="data">
-        <h1 class="heading">
-          <a href="{{ url('pontoon.teams.team', locale.code) }}">{{ locale.name }}
-            <span class="small">{{ locale.code }}</span>
-          </a>
-        </h1>
-        <ul class="details">
-          <li class="script">
-            <span class="title">Script</span>
-            <span class="value">{{ locale.script }}</span>
-          </li>
-          <li class="writing-direction">
-            <span class="title">Writing direction</span>
-            <span class="value">{{ locale.get_direction_display()|capitalize }}</span>
-          </li>
-          <li class="literate-speakers">
-            <span class="title">Number of literate speakers<sup><a href="http://www.unicode.org/cldr/charts/latest/supplemental/territory_language_information.html" target="_blank">*</a></sup></span>
-            <span class="value">{{ locale.population|intcomma or 'Unknown' }}</span>
-          </li>
-        </ul>
-        <div class="progress clearfix">
-          <div class="chart-wrapper">
-            <canvas class="chart" height="110" width="110"></canvas>
-            <span class="number noselect"></span>
-          </div>
-          <div class="legend">
-            <ul>
-              <li class="translated">
-                <span class="fa status"></span>
-                Translated
-                <span class="value" data-value="{{ locale.approved_strings }}">{{ locale.approved_strings|intcomma }}</span>
-              </li>
-              <li class="suggested">
-                <span class="fa status"></span>
-                Suggested
-                <span class="value" data-value="{{ locale.translated_strings }}">{{ locale.translated_strings|intcomma }}</span>
-              </li>
-              <li class="fuzzy">
-                <span class="fa status"></span>
-                Fuzzy
-                <span class="value" data-value="{{ locale.fuzzy_strings }}">{{ locale.fuzzy_strings|intcomma }}</span>
-              </li>
-              <li class="missing">
-                <span class="fa status"></span>
-                Missing
-                {% set missing_strings = locale.total_strings - locale.approved_strings - locale.translated_strings - locale.fuzzy_strings %}
-                <span class="value" data-value="{{ missing_strings }}">{{ missing_strings|intcomma }}</span>
-              </li>
-              <li class="all">
-                All strings
-                <span class="value" data-value="{{ locale.total_strings }}">{{ locale.total_strings|intcomma }}</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
+  <div class="container clearfix">
+    <h1 class="heading">
+      <a href="{{ url('pontoon.teams.team', locale.code) }}">{{ locale.name }}
+        <span class="small">{{ locale.code }}</span>
+      </a>
+    </h1>
 
-      <div class="timeline">
-        <div class="chart"></div>
-      </div>
+    <ul class="details">
+      <li class="plural-forms">
+        <span class="title">Plural forms<sup><a href="http://cldr.unicode.org/index/cldr-spec/plural-rules" target="_blank">*</a></sup></span>
+        <span class="value">{{ locale.cldr_plurals_list() }}</span>
+      </li>
+      <li class="script">
+        <span class="title">Script</span>
+        <span class="value">{{ locale.script }}</span>
+      </li>
+      <li class="writing-direction">
+        <span class="title">Writing direction</span>
+        <span class="value">{{ locale.get_direction_display()|capitalize }}</span>
+      </li>
+      <li class="literate-speakers">
+        <span class="title">Number of literate speakers<sup><a href="http://www.unicode.org/cldr/charts/latest/supplemental/territory_language_information.html" target="_blank">*</a></sup></span>
+        <span class="value">{{ locale.population|intcomma or 'Unknown' }}</span>
+      </li>
+    </ul>
+
+    <div class="progress clearfix">
+      <canvas class="chart" height="130" width="130"></canvas>
+      <span class="number noselect"></span>
     </div>
+
+    <ul class="legend">
+      <li class="translated">
+        <span class="fa status"></span>
+        Translated strings
+        <span class="value" data-value="{{ locale.approved_strings }}">{{ locale.approved_strings|intcomma }}</span>
+      </li>
+      <li class="suggested">
+        <span class="fa status"></span>
+        Suggested strings
+        <span class="value" data-value="{{ locale.translated_strings }}">{{ locale.translated_strings|intcomma }}</span>
+      </li>
+      <li class="fuzzy">
+        <span class="fa status"></span>
+        Fuzzy strings
+        <span class="value" data-value="{{ locale.fuzzy_strings }}">{{ locale.fuzzy_strings|intcomma }}</span>
+      </li>
+      <li class="missing">
+        <span class="fa status"></span>
+        Missing strings
+        {% set missing_strings = locale.total_strings - locale.approved_strings - locale.translated_strings - locale.fuzzy_strings %}
+        <span class="value" data-value="{{ missing_strings }}">{{ missing_strings|intcomma }}</span>
+      </li>
+      <li class="all">
+        All strings
+        <span class="value" data-value="{{ locale.total_strings }}">{{ locale.total_strings|intcomma }}</span>
+      </li>
+    </ul>
   </div>
 </section>
 {% endblock %}

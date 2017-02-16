@@ -7,7 +7,7 @@ $(function() {
     var stats = {},
         progress = $(this).parents('.progress');
 
-    progress.find('.legend li').each(function() {
+    progress.siblings('.legend').find('li').each(function() {
       stats[$(this).attr('class')] = $(this).find('.value').data('value');
     });
 
@@ -32,7 +32,7 @@ $(function() {
         radius = (canvas.width - context.lineWidth)/2,
         end = null;
 
-    progress.find('.legend li:not(.all)').each(function() {
+    progress.siblings('.legend').find('li:not(.all)').each(function() {
       var length = fraction[$(this).attr('class')] * 2,
           start = (end !== null) ? end : -0.5;
           color = window.getComputedStyle(

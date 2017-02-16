@@ -1,6 +1,7 @@
 import cgi
 import datetime
 import json
+import re
 import urllib
 import urlparse
 
@@ -219,3 +220,15 @@ def providers_media_js(request):
     return jinja2.Markup('\n'.join([
         p.media_js(request) for p in providers.registry.get_list()
     ]))
+
+
+@library.filter
+def format_repository_url(value):
+    """Turn GitHub and SSH repository URLs into HTTPS"""
+    value = (
+        re.sub(re.escape('.git') + '$', '', value)
+        .replace('git@github.com:', 'https://github.com/')
+        .replace('ssh://', 'https://')
+    )
+
+    return value

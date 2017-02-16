@@ -835,29 +835,6 @@ body .container .info p a:visited {
   color: #7BC876;
 }
 
-.legend li {
-  color: #AAAAAA;
-  line-height: 22px;
-  padding-left: 40px;
-  position: relative;
-  text-align: left;
-  text-transform: uppercase;
-  height: 22px;
-}
-
-.legend li.all {
-  padding-left: 22px;
-}
-
-.legend li a {
-  font-weight: normal;
-}
-
-.legend li span.value {
-  color: #EBEBEB;
-  float: right;
-}
-
 .notification {
   background: rgba(51, 57, 65, 0.9);
   color: #7BC876;

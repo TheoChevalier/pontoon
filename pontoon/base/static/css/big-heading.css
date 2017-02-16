@@ -3,94 +3,113 @@ ul {
   margin: 0;
 }
 
-.charts > div {
-  height: 280px;
+#heading {
+  padding: 30px 0;
 }
 
-.data {
-  float: left;
-  position: relative;
-  width: 300px;
+#heading h1 {
+  padding-bottom: 30px;
 }
 
-.data h1 a {
+#heading h1 a {
   color: #EBEBEB;
   font-weight: bold;
   font-size: 32px;
 }
 
-.data h1 .small {
+#heading h1 .small {
   color: #7BC876;
-  font-weight: 100;
-  padding-left: 1px;
+  font-weight: 300;
+  padding-left: 5px;
 }
 
-.details li {
-  font-size: 12px;
-  line-height: 1em;
-  padding-top: 10px;
+#heading .details,
+#heading .legend {
+  font-weight: 300;
+  width: 360px;
 }
 
-.details .title {
+#heading .details li,
+#heading .legend li {
+  line-height: 24px;
+}
+
+#heading .details {
+  float: left;
+}
+
+#heading .details .title {
   color: #AAAAAA;
   padding-right: 5px;
   text-transform: uppercase;
 }
 
-.details .literate-speakers .title {
-  float: left;
-  margin-top: -4px;
-}
-
-.data .details .value {
+#heading .details .value {
   float: right;
 }
 
-.data .progress {
-  bottom: 0;
-  position: absolute;
+#heading .details .value a {
+  color: #EBEBEB;
+}
+
+#heading .details .priority .value {
+  margin-top: 6px;
+}
+
+#heading .details .repository .value {
+  overflow: hidden;
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 275px;
+}
+
+#heading .progress {
+  float: left;
+  margin: -10px 65px 0;
+  position: relative;
   text-align: center;
 }
 
-.data .progress .chart-wrapper {
-  position: relative;
-  float: left;
-  width: 110px;
-}
-
-.data .progress .legend {
-  float: right;
-  font-size: 12px;
-  width: 190px;
-}
-
-.data .progress .number {
-  font-size: 45px;
+#heading .progress .number {
+  font-size: 50px;
   font-weight: bold;
   left: 0;
   right: 0;
-  top: 20px;
+  top: 25px;
   margin: 0;
   position: absolute;
 }
 
-.data .progress .number:after {
+#heading .progress .number:after {
   content: "%";
   color: #888888;
   display: block;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 100;
   line-height: 10px;
 }
 
-.charts .timeline {
+#heading .legend {
   float: right;
-  width: 620px;
 }
 
-.charts .timeline .chart {
-  height: 278px;
-  width: 100%;
+#heading .legend li {
+  color: #AAAAAA;
+  padding-left: 25px;
+  position: relative;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+#heading .legend li .status.fa {
+  left: 0;
+  top: 4px;
+}
+
+#heading .legend li span.value {
+  color: #EBEBEB;
+  float: right;
 }
 
 .controls > .search-wrapper.small input {

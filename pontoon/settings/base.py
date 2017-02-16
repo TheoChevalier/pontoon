@@ -380,20 +380,16 @@ PIPELINE_JS = {
     },
     'localization': {
         'source_filenames': (
-            'js/lib/highcharts.js',
             'js/table.js',
             'js/progress-chart.js',
-            'js/timeline-chart.js',
             'js/tabs.js',
         ),
         'output_filename': 'js/localization.min.js',
     },
     'project': {
         'source_filenames': (
-            'js/lib/highcharts.js',
             'js/table.js',
             'js/progress-chart.js',
-            'js/timeline-chart.js',
             'js/tabs.js',
         ),
         'output_filename': 'js/project.min.js',
@@ -406,10 +402,8 @@ PIPELINE_JS = {
     },
     'team': {
         'source_filenames': (
-            'js/lib/highcharts.js',
             'js/table.js',
             'js/progress-chart.js',
-            'js/timeline-chart.js',
             'js/tabs.js',
             'js/request_projects.js',
             'js/permissions.js',
