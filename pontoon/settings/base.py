@@ -265,7 +265,7 @@ PIPELINE_CSS = {
         'source_filenames': (
             'css/table.css',
             'css/contributors.css',
-            'css/big-heading.css',
+            'css/heading_info.css',
         ),
         'output_filename': 'css/project.min.css',
     },
@@ -273,7 +273,7 @@ PIPELINE_CSS = {
         'source_filenames': (
             'css/table.css',
             'css/contributors.css',
-            'css/big-heading.css',
+            'css/heading_info.css',
         ),
         'output_filename': 'css/localization.min.css',
     },
@@ -287,7 +287,7 @@ PIPELINE_CSS = {
         'source_filenames': (
             'css/table.css',
             'css/contributors.css',
-            'css/big-heading.css',
+            'css/heading_info.css',
             'css/team.css',
         ),
         'output_filename': 'css/team.min.css',

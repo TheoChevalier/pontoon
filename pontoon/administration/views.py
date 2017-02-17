@@ -14,7 +14,7 @@ from pontoon.administration.forms import (
     RepositoryInlineFormSet,
     SubpageInlineFormSet,
 )
-from pontoon.base import utils
+from pontoon.base import views, utils
 from pontoon.base.utils import require_AJAX
 from pontoon.base.models import (
     Locale,
@@ -32,7 +32,7 @@ log = logging.getLogger('pontoon')
 def admin(request, template='admin.html'):
     """Admin interface."""
     if not request.user.has_perm('base.can_manage'):
-        return render(request, '403.html', status=403)
+        return views.error403(request)
 
     projects = (
         Project.objects.all()
@@ -77,7 +77,7 @@ def manage_project(request, slug=None, template='admin_project.html'):
     log.debug("Admin project.")
 
     if not request.user.has_perm('base.can_manage'):
-        return render(request, '403.html', status=403)
+        return views.error403(request)
 
     form = ProjectForm()
     subpage_formset = SubpageInlineFormSet()

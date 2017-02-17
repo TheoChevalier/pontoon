@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% import 'widgets/heading_info.html' as HeadingInfo %}
 {% import "widgets/menu.html" as Menu %}
 
 {% block title %}Pontoon &middot; {{ locale.name }} ({{ locale.code }}){% endblock %}
@@ -19,63 +20,45 @@
 {% block heading %}
 <section id="heading">
   <div class="container clearfix">
-    <h1 class="heading">
-      <a href="{{ url('pontoon.teams.team', locale.code) }}">{{ locale.name }}
-        <span class="small">{{ locale.code }}</span>
-      </a>
+    <h1>
+      {{ HeadingInfo.heading_item(
+        title=locale.name,
+        link=url('pontoon.teams.team', locale.code))
+      }}
+      {{ HeadingInfo.heading_item(
+        title=locale.code,
+        link=url('pontoon.teams.team', locale.code),
+        class='small')
+      }}
     </h1>
 
     <ul class="details">
-      <li class="plural-forms">
-        <span class="title">Plural forms<sup><a href="http://cldr.unicode.org/index/cldr-spec/plural-rules" target="_blank">*</a></sup></span>
-        <span class="value">{{ locale.cldr_plurals_list() }}</span>
-      </li>
-      <li class="script">
-        <span class="title">Script</span>
-        <span class="value">{{ locale.script }}</span>
-      </li>
-      <li class="writing-direction">
-        <span class="title">Writing direction</span>
-        <span class="value">{{ locale.get_direction_display()|capitalize }}</span>
-      </li>
-      <li class="literate-speakers">
-        <span class="title">Number of literate speakers<sup><a href="http://www.unicode.org/cldr/charts/latest/supplemental/territory_language_information.html" target="_blank">*</a></sup></span>
-        <span class="value">{{ locale.population|intcomma or 'Unknown' }}</span>
-      </li>
+      {{ HeadingInfo.details_item(
+        title='Plural forms',
+        class='plural-forms',
+        value=locale.cldr_plurals_list(),
+        title_link='http://cldr.unicode.org/index/cldr-spec/plural-rules')
+      }}
+      {{ HeadingInfo.details_item(
+        title='Script',
+        class='script',
+        value=locale.script)
+      }}
+      {{ HeadingInfo.details_item(
+        title='Writing direction',
+        class='writing-direction',
+        value=locale.get_direction_display()|capitalize)
+      }}
+      {{ HeadingInfo.details_item(
+        title='Number of literate speakers',
+        class='literate-speakers',
+        value=(locale.population|intcomma or 'Unknown'),
+        title_link='http://www.unicode.org/cldr/charts/latest/supplemental/territory_language_information.html')
+      }}
     </ul>
 
-    <div class="progress clearfix">
-      <canvas class="chart" height="130" width="130"></canvas>
-      <span class="number noselect"></span>
-    </div>
-
-    <ul class="legend">
-      <li class="translated">
-        <span class="fa status"></span>
-        Translated strings
-        <span class="value" data-value="{{ locale.approved_strings }}">{{ locale.approved_strings|intcomma }}</span>
-      </li>
-      <li class="suggested">
-        <span class="fa status"></span>
-        Suggested strings
-        <span class="value" data-value="{{ locale.translated_strings }}">{{ locale.translated_strings|intcomma }}</span>
-      </li>
-      <li class="fuzzy">
-        <span class="fa status"></span>
-        Fuzzy strings
-        <span class="value" data-value="{{ locale.fuzzy_strings }}">{{ locale.fuzzy_strings|intcomma }}</span>
-      </li>
-      <li class="missing">
-        <span class="fa status"></span>
-        Missing strings
-        {% set missing_strings = locale.total_strings - locale.approved_strings - locale.translated_strings - locale.fuzzy_strings %}
-        <span class="value" data-value="{{ missing_strings }}">{{ missing_strings|intcomma }}</span>
-      </li>
-      <li class="all">
-        All strings
-        <span class="value" data-value="{{ locale.total_strings }}">{{ locale.total_strings|intcomma }}</span>
-      </li>
-    </ul>
+    {{ HeadingInfo.progress_chart() }}
+    {{ HeadingInfo.progress_chart_legend(locale) }}
   </div>
 </section>
 {% endblock %}

@@ -699,7 +699,7 @@ tfoot td a {
 }
 
 .select .menu ul li .chart span.missing {
-  background: #FD5F60;
+  background: #4D5967;
 }
 
 .select .menu ul li .latest {
@@ -855,7 +855,7 @@ body .container .info p a:visited {
 }
 
 .notification li.error {
-  color: #FD5F60;
+  color: #F36;
 }
 
 img.rounded {
@@ -889,7 +889,7 @@ img.rounded {
 }
 
 .details div.missing {
-  border-color: #FD5F60;
+  border-color: #4D5967;
 }
 
 .details div span {
@@ -1152,7 +1152,7 @@ body > form,
 }
 
 .check-box .fa:before {
-  color: #FD5F60;
+  color: #F36;
   content: "";
 
 }

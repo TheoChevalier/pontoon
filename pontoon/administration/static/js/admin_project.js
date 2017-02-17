@@ -78,6 +78,16 @@ $(function() {
     });
   });
 
+  // Suggest public repository website URL
+  $('body').on('blur', '.repo input', function() {
+    var val = $(this).val()
+      .replace(/\.git$/, '')
+      .replace('git@github.com:', 'https://github.com/')
+      .replace('ssh://', 'https://');
+
+    $(this).parents('.details-wrapper').siblings('.website-wrapper').find('input').val(val);
+  });
+
   // Select repository type
   $('body').click(function () {
     $('.repository')
@@ -143,8 +153,4 @@ $(function() {
 
     $totalForms.val(count + 1);
   });
-
-  // Auto-Update project if chosen locales changed
-  $('.repository.autoupdate .update:visible').click();
-
 });

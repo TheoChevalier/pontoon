@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% import 'widgets/heading_info.html' as HeadingInfo %}
 {% import "widgets/menu.html" as Menu %}
 
 {% block title %}Pontoon &middot; {{ locale.name }} ({{ locale.code }}) &middot; {{ project.name }}{% endblock %}
@@ -18,85 +19,46 @@
 <section id="heading">
   <div class="container clearfix">
     <h1>
-      <a href="{{ url('pontoon.projects.project', project.slug) }}">{{ project.name }}</a>
-      <a class="small" href="{{ url('pontoon.teams.team', locale.code) }}">{{ locale.name }}</a>
+      {{ HeadingInfo.heading_item(
+        title=project.name,
+        link=url('pontoon.projects.project', project.slug))
+      }}
+      {{ HeadingInfo.heading_item(
+        title=locale.name,
+        link=url('pontoon.teams.team', locale.code),
+        class='small')
+      }}
     </h1>
 
     <ul class="details">
-      <li class="priority">
-        <span class="title">Priority</span>
-        <span class="value">
-          {% for n in range(5) %}
-            <span class="fa fa-star{% if loop.index <= project.priority %}{{ ' active' }}{% endif %}"></span>
-          {% endfor %}
-        </span>
-      </li>
-      <li class="deadline">
-        <span class="title">Deadline</span>
-        <span class="value">
-          <time datetime="{% if project.deadline %}{{ project.deadline.isoformat() }}{% endif %}" class="{{ project.deadline|date_status }}">{{ project.deadline|format_datetime('short_date', default='Not set') }}</time>
-        </span>
-      </li>
-      <li class="repository">
-        <span class="title">Repository</span>
-        <span class="value">
-          {% set repo_url = project.source_repository.url %}
-          <a href="{{ repo_url|format_repository_url }}">{{ repo_url|format_repository_url }}</a>
-        </span>
-      </li>
+      {{ HeadingInfo.details_item_priority(project.priority) }}
+
+      {{ HeadingInfo.details_item_deadline(project.deadline) }}
+
+      {% set repository_website = project.repositories.first().website %}
+      {% if repository_website %}
+      {{ HeadingInfo.details_item(
+        title='Repository',
+        class='repository',
+        value=repository_website|pretty_url,
+        value_link=repository_website,
+        value_class='overflow')
+      }}
+      {% endif %}
+
       {% if project.url %}
-      <li class="website">
-        <span class="title">Website</span>
-        <span class="value">
-          <a href="{{ project.url }}">{{ project.url }}</a>
-        </span>
-      </li>
+      {{ HeadingInfo.details_item(
+        title='Website',
+        class='website',
+        value=project.url|pretty_url,
+        value_link=project.url,
+        value_class='overflow')
+      }}
       {% endif %}
     </ul>
 
-    <div class="progress">
-      <canvas class="chart" height="130" width="130"></canvas>
-      <span class="number noselect"></span>
-    </div>
-
-    <ul class="legend">
-      {% set link = url('pontoon.translate', locale.code, project.slug, 'all-resources') %}
-      <li class="translated">
-        <a href="{{ link }}?status=translated">
-          <span class="fa status"></span>
-          Translated strings
-          <span class="value" data-value="{{ project_locale.approved_strings }}">{{ project_locale.approved_strings|intcomma }}</span>
-        </a>
-      </li>
-      <li class="suggested">
-        <a href="{{ link }}?status=suggested">
-          <span class="fa status"></span>
-          Suggested strings
-          <span class="value" data-value="{{ project_locale.translated_strings }}">{{ project_locale.translated_strings|intcomma }}</span>
-        </a>
-      </li>
-      <li class="fuzzy">
-        <a href="{{ link }}?status=fuzzy">
-          <span class="fa status"></span>
-          Fuzzy strings
-          <span class="value" data-value="{{ project_locale.fuzzy_strings }}">{{ project_locale.fuzzy_strings|intcomma }}</span>
-        </a>
-      </li>
-      <li class="missing">
-        <a href="{{ link }}?status=missing">
-          <span class="fa status"></span>
-          Missing strings
-          {% set missing_strings = project_locale.total_strings - project_locale.approved_strings - project_locale.translated_strings - project_locale.fuzzy_strings %}
-          <span class="value" data-value="{{ missing_strings }}">{{ missing_strings|intcomma }}</span>
-        </a>
-      </li>
-      <li class="all">
-        <a href="{{ link }}">
-          All strings
-          <span class="value" data-value="{{ project_locale.total_strings }}">{{ project_locale.total_strings|intcomma }}</span>
-        </a>
-      </li>
-    </ul>
+    {{ HeadingInfo.progress_chart() }}
+    {{ HeadingInfo.progress_chart_legend(project_locale, url('pontoon.translate', locale.code, project.slug, 'all-resources')) }}
   </div>
 </section>
 {% endblock %}

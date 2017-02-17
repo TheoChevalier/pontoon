@@ -78,6 +78,12 @@
           {{ repo_form.branch }}
         </div>
       </section>
+      <section class="website-wrapper">
+        <div class="website">
+          {{ repo_form.website.label_tag() }}
+          {{ repo_form.website }}
+        </div>
+      </section>
       <section class="prefix-wrapper">
         <div class="prefix">
           {{ repo_form.permalink_prefix.label_tag() }}
@@ -109,6 +115,12 @@
       <div class="branch">
         {{ repo_formset.empty_form.branch.label_tag() }}
         {{ repo_formset.empty_form.branch }}
+      </div>
+    </section>
+    <section class="website-wrapper">
+      <div class="website">
+        {{ repo_formset.empty_form.website.label_tag() }}
+        {{ repo_formset.empty_form.website }}
       </div>
     </section>
     <section class="prefix-wrapper">

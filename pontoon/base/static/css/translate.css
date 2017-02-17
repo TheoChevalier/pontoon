@@ -285,8 +285,14 @@ body > header .locale.select {
 }
 
 .status:before {
-  color: #FD5F60;
+  color: #4D5967;
   content: "";
+}
+
+#filter .missing .status:before,
+.hovered .status:before,
+li:hover .status:before {
+  color: #3F4752;
 }
 
 .suggested .status:before {
@@ -546,6 +552,7 @@ body > header aside p {
   color: #7BC876;
   font-size: 128px;
   padding: 40px 0 10px;
+  text-align: center;
 }
 
 .advanced #entitylist,
@@ -737,7 +744,7 @@ body > header aside p {
 }
 
 #filter .menu li.time-range input.error {
-  color: #FD5F60;
+  color: #F36;
 }
 
 #filter .menu li.time-range input#to {
@@ -1433,7 +1440,7 @@ body > header aside p {
 }
 
 .warning-overlay h2 {
-  color: #FD5F60;
+  color: #F36;
 }
 
 .warning-overlay ul {
@@ -1714,7 +1721,7 @@ p#sign-in-required > a#sidebar-signin {
 }
 
 #helpers > section ul li > header button.delete:hover:before {
-  color: #FD5F60;
+  color: #F36;
 }
 
 
@@ -1792,7 +1799,7 @@ p#sign-in-required > a#sidebar-signin {
 }
 
 #batch .intro p .warning {
-  color: #FD5F60;
+  color: #F36;
 }
 
 #batch button,
@@ -1838,7 +1845,7 @@ p#sign-in-required > a#sidebar-signin {
 }
 
 #batch button#delete-all {
-  background: #FD5F60;
+  background: #F36;
 }
 
 #batch input {

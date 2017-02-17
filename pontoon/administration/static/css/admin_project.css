@@ -67,7 +67,7 @@ h2 .small {
 }
 
 h3 {
-  color: #FD5F60;
+  color: #F36;
   font-weight: 300;
   margin-left: -1px;
   text-align: left;
@@ -117,7 +117,7 @@ form .button {
 }
 
 .controls .button.sync {
-  background: #FD5F60;
+  background: #F36;
   color: #272A2F;
   float: left;
   margin-right: 10px;
@@ -245,7 +245,7 @@ form a.add-repo {
 }
 
 .repository .type-wrapper .authentication-title {
-  color: #FD5F60;
+  color: #F36;
   font-size: 12px;
   padding-top: 54px;
   text-align: left;
@@ -271,7 +271,8 @@ form a.add-repo {
 }
 
 .repository .prefix-wrapper,
-.repository .branch-wrapper {
+.repository .branch-wrapper,
+.repository .website-wrapper {
   clear: both;
 }
 
@@ -383,7 +384,7 @@ textarea {
 }
 
 .errorlist {
-  color: #FD5F60;
+  color: #F36;
   display: inline-block;
   font-size: 12px;
   line-height: 14px; /* Strange, but needed to keep controls in line when error occures */
