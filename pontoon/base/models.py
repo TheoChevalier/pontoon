@@ -1099,6 +1099,12 @@ class ProjectLocale(AggregatedStats):
                 'approved_percent': int(math.floor(obj.approved_strings / obj.total_strings * 100)),
             }
 
+    @property
+    def contributors(self, start_date=None):
+        return User.translators.with_translation_counts(
+            start_date, Q(translation__entity__resource__project=self.project, translation__locale=self.locale)
+        )
+
     def aggregate_stats(self):
         TranslatedResource.objects.filter(
             resource__project=self.project,
@@ -1126,6 +1132,8 @@ class Repository(models.Model):
     )
     url = models.CharField("URL", max_length=2000)
     branch = models.CharField("Branch", blank=True, max_length=2000)
+
+    website = models.URLField("Public Repository Website", blank=True, max_length=2000)
 
     # TODO: We should be able to remove this once we have persistent storage
     permalink_prefix = models.CharField("Download prefix", max_length=2000, help_text="""

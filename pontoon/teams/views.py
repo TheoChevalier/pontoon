@@ -162,7 +162,7 @@ def request_projects(request, locale):
 
 class LocaleContributorsView(ContributorsMixin, DetailView):
     """
-    Renders view of contributors for the project.
+    Renders view of contributors for the team.
     """
     template_name = 'teams/includes/contributors.html'
     model = Locale

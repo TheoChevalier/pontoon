@@ -67,7 +67,7 @@ h2 .small {
 }
 
 h3 {
-  color: #FD5F60;
+  color: #F36;
   font-weight: 300;
   margin-left: -1px;
   text-align: left;
@@ -117,7 +117,7 @@ form .button {
 }
 
 .controls .button.sync {
-  background: #FD5F60;
+  background: #F36;
   color: #272A2F;
   float: left;
   margin-right: 10px;
@@ -144,10 +144,6 @@ form a.add-repo {
   float: left;
   margin: 3px 0;
   text-transform: uppercase;
-}
-
-.authenticate .transifex .button {
-  margin-top: 42px;
 }
 
 .locale.select {
@@ -203,15 +199,11 @@ form a.add-repo {
   margin-top: 0;
 }
 
-.repository .type-wrapper .authentication-title,
-.repository .transifex .authentication-form,
-.repository .transifex .bottom {
+.repository .type-wrapper .authentication-title {
   display: none;
 }
 
-.repository.authenticate .type-wrapper .authentication-title,
-.repository.authenticate .transifex .authentication-form,
-.repository.authenticate .transifex .bottom {
+.repository.authenticate .type-wrapper .authentication-title {
   display: block;
 }
 
@@ -245,7 +237,7 @@ form a.add-repo {
 }
 
 .repository .type-wrapper .authentication-title {
-  color: #FD5F60;
+  color: #F36;
   font-size: 12px;
   padding-top: 54px;
   text-align: left;
@@ -254,83 +246,58 @@ form a.add-repo {
 
 .repository .details-wrapper {
   float: left;
+  width: 552px;
+}
+
+.repository.git .details-wrapper {
   width: 408px;
 }
 
-.repository .details-wrapper[data-repository-type="transifex"] .repo {
-  display: none;
+.repository .details-wrapper input {
+  width: 548px;
 }
 
-.repository .details-wrapper[data-repository-type="transifex"] .transifex {
-  display: block;
-}
-
-.repository .details-wrapper .button.update {
-  color: #444444;
-  padding: 0;
-}
-
-.repository .prefix-wrapper,
-.repository .branch-wrapper {
-  clear: both;
-}
-
-.repository .prefix-wrapper .prefix input[type=text] {
-  width: 100%;
-}
-
-.repository input[type=text] {
+.repository.git .details-wrapper input {
   width: 403px;
 }
 
-.edit .repository input[type=text],
+.repository .branch-wrapper {
+  display: none;
+  float: left;
+  margin-left: 6px;
+  width: 138px;
+}
+
+.repository.git .branch-wrapper {
+  display: block;
+}
+
+.repository .website-wrapper,
+.repository .prefix-wrapper,
+.repository .repository-toolbar {
+  margin-top: 20px;
+}
+
+.repository .prefix-wrapper .prefix input[type=text] {
+  width: 615px;
+}
+
+.repository .repository-toolbar > section {
+  display: inline-block;
+  float: left;
+}
+
+.repository .repository-toolbar > section.delete-wrapper {
+  float: right;
+}
+
 .subpages input[id*=url] {
   float: left;
   width: 367px;
 }
 
-.transifex {
-  display: none;
-}
-
-.transifex .authentication-form {
-  padding-top: 73px;
-  padding-bottom: 57px;
-}
-
-.transifex input#id_transifex_project,
-.edit .authenticate .transifex input#id_transifex_project,
-.edit .transifex input#id_transifex_username {
-  float: left;
-  width: 196px;
-}
-
-.transifex input#id_transifex_resource,
-.edit .authenticate .transifex input#id_transifex_resource {
-  float: left;
-  width: 196px;
-}
-
-.edit .transifex input#id_transifex_project,
-.edit .transifex input#id_transifex_resource {
-  float: left;
-  width: 178px;
-}
-
-.edit .transifex input#id_transifex_password,
-.edit .authenticate .transifex .authentication-form label:nth-child(2) {
-  float: left;
-  width: 160px;
-}
-
-.transifex label,
-.edit .authenticate .transifex label  {
-  float: left;
-  width: 200px;
-}
-
-.edit .transifex label {
-  width: 182px;
+.branch-wrapper input[type=text] {
+  width: 134px;
 }
 
 .edit section .bottom {
@@ -362,11 +329,6 @@ form a.add-repo {
   width: 407px;
 }
 
-label[for=id_repository_type],
-.transifex input#id_transifex_project,
-.transifex input#id_transifex_username,
-.transifex label[for*=project],
-.transifex label[for*=username],
 .subpages input[id*=name],
 .subpages label[for*=name] {
   margin-right: 6px;
@@ -383,7 +345,7 @@ textarea {
 }
 
 .errorlist {
-  color: #FD5F60;
+  color: #F36;
   display: inline-block;
   font-size: 12px;
   line-height: 14px; /* Strange, but needed to keep controls in line when error occures */

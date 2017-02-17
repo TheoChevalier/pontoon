@@ -1,7 +1,6 @@
 import cgi
 import datetime
 import json
-import re
 import urllib
 import urlparse
 
@@ -46,10 +45,12 @@ def url(viewname, *args, **kwargs):
     """Helper for Django's ``reverse`` in templates."""
     return reverse(viewname, args=args, kwargs=kwargs)
 
+
 @library.global_function
 def return_url(request):
     """Get an url of the previous page."""
     return request.POST.get('return_url', request.META.get('HTTP_REFERER', '/'))
+
 
 @library.filter
 def urlparams(url_, hash=None, **query):
@@ -183,9 +184,6 @@ def format_timedelta(value):
 def nospam(self):
     return jinja2.Markup(cgi.escape(self, True).replace('@', '&#64;').replace('.', '&#46;').replace('\'', '&quot;'))
 
-#
-# Currently django-allauth don't provide any support for jinja2 tags.
-#
 
 @library.global_function
 def provider_login_url(request, provider_id='fxa', **query):
@@ -223,12 +221,10 @@ def providers_media_js(request):
 
 
 @library.filter
-def format_repository_url(value):
-    """Turn GitHub and SSH repository URLs into HTTPS"""
-    value = (
-        re.sub(re.escape('.git') + '$', '', value)
-        .replace('git@github.com:', 'https://github.com/')
-        .replace('ssh://', 'https://')
-    )
+def pretty_url(url):
+    """Remove protocol and www"""
+    url = url.split('://')[1]
+    if url.startswith('www.'):
+        url = url[4:]
 
-    return value
+    return url

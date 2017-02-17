@@ -40,6 +40,9 @@
 
               {% if perms.base.can_manage %}
               <li><a href="{{ url('pontoon.admin') }}">Admin</a></li>
+                {% if project %}
+                <li><a href="{{ url('pontoon.admin.project', project.slug) }}">Admin &middot; Current Project</a></li>
+                {% endif %}
               {% endif %}
 
               {% if settings.DJANGO_LOGIN %}

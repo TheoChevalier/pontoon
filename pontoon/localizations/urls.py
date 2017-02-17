@@ -11,6 +11,11 @@ urlpatterns = [
         views.localization,
         name='pontoon.localizations.localization'),
 
+    # Localization contributors
+    url(r'^(?P<code>[A-Za-z0-9\-\@\.]+)/(?P<slug>[\w-]+)/contributors/$',
+        views.localization,
+        name='pontoon.localizations.contributors'),
+
     # Project info
     url(r'^(?P<code>[A-Za-z0-9\-\@\.]+)/(?P<slug>[\w-]+)/project-info/$',
         views.localization,
@@ -25,6 +30,11 @@ urlpatterns = [
     url(r'^(?P<code>[A-Za-z0-9\-\@\.]+)/(?P<slug>[\w-]+)/ajax/$',
         views.ajax_resources,
         name='pontoon.localizations.ajax.resources'),
+
+    # AJAX view: Localization contributors
+    url(r'^(?P<code>[A-Za-z0-9\-\@\.]+)/(?P<slug>[\w-]+)/ajax/contributors/$',
+        views.LocalizationContributorsView.as_view(),
+        name='pontoon.localizations.ajax.contributors'),
 
     # AJAX view: Project info
     url(r'^[A-Za-z0-9\-\@\.]+/(?P<slug>[\w-]+)/ajax/project-info/$',

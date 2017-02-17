@@ -73,7 +73,7 @@ table.table {
 }
 
 .table td.deadline time.overdue {
-  color: #FD5F60;
+  color: #F36;
 }
 
 .table td.code a {

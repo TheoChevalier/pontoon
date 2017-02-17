@@ -1,11 +1,14 @@
 import logging
 import math
 
+from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import get_object_or_404, render
+from django.views.generic.detail import DetailView
 
 from pontoon.base.models import Locale, Project, ProjectLocale, TranslatedResource
 from pontoon.base.utils import require_AJAX
+from pontoon.contributors.views import ContributorsMixin
 
 
 log = logging.getLogger('pontoon')
@@ -73,3 +76,23 @@ def ajax_resources(request, code, slug):
         'project': project,
         'resources': parts,
     })
+
+
+class LocalizationContributorsView(ContributorsMixin, DetailView):
+    """
+    Renders view of contributors for the localization.
+    """
+    template_name = 'localizations/includes/contributors.html'
+
+    def get_object(self):
+        return get_object_or_404(
+            ProjectLocale,
+            locale__code__iexact=self.kwargs['code'],
+            project__slug=self.kwargs['slug']
+        )
+
+    def get_context_object_name(self, obj):
+        return 'projectlocale'
+
+    def contributors_filter(self, **kwargs):
+        return Q(translation__entity__resource__project=self.object.project, translation__locale=self.object.locale)
