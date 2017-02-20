@@ -18,10 +18,6 @@ def populate_repository_website(apps, schema_editor):
         repository.save()
 
 
-def noop(apps, schema_editor):
-    pass
-
-
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -29,5 +25,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(populate_repository_website, noop),
+        migrations.RunPython(populate_repository_website, migrations.RunPython.noop),
     ]
