@@ -2,7 +2,7 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth.views import logout
 from django.views.generic import RedirectView, TemplateView
-from pontoon.base.views import error403, error404, heroku_setup
+from pontoon.base.views import heroku_setup
 from pontoon.intro.views import intro
 from pontoon.teams.views import team
 
@@ -32,9 +32,9 @@ urlpatterns = [
     url(r'^signout/$', logout, {'next_page': '/'}, name='signout'),
 
     # Error pages
-    url(r'^403/$', error403),
-    url(r'^404/$', error404),
-    url(r'^500/$', TemplateView.as_view(template_name='error500.html')),
+    url(r'^403/$', TemplateView.as_view(template_name='403.html')),
+    url(r'^404/$', TemplateView.as_view(template_name='404.html')),
+    url(r'^500/$', TemplateView.as_view(template_name='500.html')),
 
     # Urls related to integration with Heroku
     url(r'^heroku-setup/', heroku_setup,

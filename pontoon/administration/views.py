@@ -2,6 +2,7 @@ import logging
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
 from django.db import transaction
 from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import render
@@ -32,7 +33,7 @@ log = logging.getLogger('pontoon')
 def admin(request, template='admin.html'):
     """Admin interface."""
     if not request.user.has_perm('base.can_manage'):
-        return views.error403(request)
+        raise PermissionDenied
 
     projects = (
         Project.objects.all()
@@ -77,7 +78,7 @@ def manage_project(request, slug=None, template='admin_project.html'):
     log.debug("Admin project.")
 
     if not request.user.has_perm('base.can_manage'):
-        return views.error403(request)
+        raise PermissionDenied
 
     form = ProjectForm()
     subpage_formset = SubpageInlineFormSet()

@@ -56,14 +56,14 @@ def home(request):
 
 
 def error403(request):
-    return render(request, 'error.html', {
+    return render(request, '403.html', {
         'title': 'Forbidden page',
         'description': "You don't have permission to access this page.",
     })
 
 
 def error404(request):
-    return render(request, 'error.html', {
+    return render(request, '404.html', {
         'title': 'Page not found',
         'description': "We couldn't find the page you're looking for.",
     })
