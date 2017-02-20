@@ -616,8 +616,10 @@ class Locale(AggregatedStats):
         return locale_projects
 
     @property
-    def contributors(self, start_date=None):
-        return User.translators.with_translation_counts(start_date, Q(translation__locale=self))
+    def contributors(self):
+        return User.translators.with_translation_counts(
+            query_filters=Q(translation__locale=self)
+        )
 
     def available_projects_list(self):
         """Get a list of available project slugs."""
@@ -958,8 +960,10 @@ class Project(AggregatedStats):
         return self.repositories.first()
 
     @property
-    def contributors(self, start_date=None):
-        return User.translators.with_translation_counts(start_date, Q(translation__entity__resource__project=self))
+    def contributors(self):
+        return User.translators.with_translation_counts(
+            query_filters=Q(translation__entity__resource__project=self)
+        )
 
     def translation_repositories(self):
         """
@@ -1100,9 +1104,9 @@ class ProjectLocale(AggregatedStats):
             }
 
     @property
-    def contributors(self, start_date=None):
+    def contributors(self):
         return User.translators.with_translation_counts(
-            start_date, Q(translation__entity__resource__project=self.project, translation__locale=self.locale)
+            query_filters=Q(translation__entity__resource__project=self.project, translation__locale=self.locale)
         )
 
     def aggregate_stats(self):
