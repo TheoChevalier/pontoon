@@ -32,6 +32,7 @@ def teams(request):
 
     return render(request, 'teams/teams.html', {
         'locales': locales,
+        'top_instances': locales.get_top_instances(),
     })
 
 

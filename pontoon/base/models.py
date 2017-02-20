@@ -369,6 +369,39 @@ class AggregatedStats(models.Model):
     class Meta:
         abstract = True
 
+    @classmethod
+    def get_stats_sum(cls, qs):
+        """
+        Get sum of stats for all items in the queryset.
+        """
+        stats = qs.aggregate(
+            Sum('total_strings'),
+            Sum('approved_strings'),
+            Sum('translated_strings'),
+            Sum('fuzzy_strings'),
+        )
+
+        return cls(
+            total_strings=stats['total_strings__sum'],
+            approved_strings=stats['approved_strings__sum'],
+            translated_strings=stats['translated_strings__sum'],
+            fuzzy_strings=stats['fuzzy_strings__sum'],
+        )
+
+    @classmethod
+    def get_top_instances(cls, qs):
+        """
+        Get top instances in the queryset.
+        """
+        return {
+            'most_strings': qs.order_by('-total_strings')[0],
+            'most_translations': qs.order_by('-approved_strings')[0],
+            'most_suggestions': qs.order_by('-translated_strings')[0],
+            'most_missing': qs.annotate(
+                missing=F('total_strings') - F('approved_strings') - F('translated_strings') - F('fuzzy_strings')
+            ).order_by('-missing')[0],
+        }
+
     def adjust_stats(self, total_strings_diff, approved_strings_diff,
                      fuzzy_strings_diff, translated_strings_diff):
         self.total_strings = F('total_strings') + total_strings_diff
@@ -420,6 +453,18 @@ class LocaleQuerySet(models.QuerySet):
                 to_attr='fetched_latest_translation'
             )
         )
+
+    def get_stats_sum(self):
+        """
+        Get sum of stats for all items in the queryset.
+        """
+        return AggregatedStats.get_stats_sum(self)
+
+    def get_top_instances(self):
+        """
+        Get top instances in the queryset.
+        """
+        return AggregatedStats.get_top_instances(self)
 
 
 class Locale(AggregatedStats):
@@ -746,7 +791,6 @@ class Locale(AggregatedStats):
         return details_list
 
 
-
 class ProjectQuerySet(models.QuerySet):
     def available(self):
         """
@@ -754,6 +798,18 @@ class ProjectQuerySet(models.QuerySet):
         resource defined.
         """
         return self.filter(disabled=False, resources__isnull=False).distinct()
+
+    def get_stats_sum(self):
+        """
+        Get sum of stats for all items in the queryset.
+        """
+        return AggregatedStats.get_stats_sum(self)
+
+    def get_top_instances(self):
+        """
+        Get top instances in the queryset.
+        """
+        return AggregatedStats.get_top_instances(self)
 
 
 PRIORITY_CHOICES = (

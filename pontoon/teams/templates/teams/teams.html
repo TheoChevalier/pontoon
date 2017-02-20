@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% import 'heading.html' as Heading %}
+{% import 'widgets/heading_info.html' as HeadingInfo %}
 {% import 'teams/widgets/team_list.html' as TeamList %}
 
 {% block title %}Pontoon &middot; Localization Teams{% endblock %}
@@ -7,7 +7,51 @@
 {% block class %}teams{% endblock %}
 
 {% block heading %}
-  {{ Heading.heading(title='Localization Teams') }}
+<section id="heading">
+  <div class="container clearfix">
+    <h1>
+      {{ HeadingInfo.heading_item(
+        title='Localization Teams',
+        link=url('pontoon.teams'))
+      }}
+    </h1>
+
+    <ul class="details">
+      {{ HeadingInfo.details_item(
+        title='Number of teams',
+        class='teams-count',
+        value=locales.count())
+      }}
+      {{ HeadingInfo.details_item(
+        title='Most translations',
+        class='most-translations',
+        value=top_instances['most_translations'],
+        value_link=url('pontoon.teams.team', top_instances['most_translations'].code))
+      }}
+      {{ HeadingInfo.details_item(
+        title='Most suggestions',
+        class='most-suggestions',
+        value=top_instances['most_suggestions'],
+        value_link=url('pontoon.teams.team', top_instances['most_suggestions'].code))
+      }}
+      {{ HeadingInfo.details_item(
+        title='Most missing strings',
+        class='missing-strings',
+        value=top_instances['most_missing'],
+        value_link=url('pontoon.teams.team', top_instances['most_missing'].code))
+      }}
+      {{ HeadingInfo.details_item(
+        title='Most enabled strings',
+        class='most-strings',
+        value=top_instances['most_strings'],
+        value_link=url('pontoon.teams.team', top_instances['most_strings'].code))
+      }}
+    </ul>
+
+    {{ HeadingInfo.progress_chart() }}
+    {{ HeadingInfo.progress_chart_legend(locales.get_stats_sum()) }}
+  </div>
+</section>
 {% endblock %}
 
 {% block bottom %}

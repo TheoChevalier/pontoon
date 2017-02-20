@@ -22,6 +22,7 @@ def projects(request):
 
     return render(request, 'projects/projects.html', {
         'projects': projects,
+        'top_instances': projects.get_top_instances(),
     })
 
 

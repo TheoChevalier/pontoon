@@ -52,6 +52,10 @@ ul {
   color: #EBEBEB;
 }
 
+#heading .details .value a:hover {
+  color: #7BC876;
+}
+
 #heading .details .priority .value {
   margin-top: 6px;
 }
