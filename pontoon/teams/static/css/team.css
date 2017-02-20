@@ -39,6 +39,7 @@
   color: #3F4752;
   float: right;
   font-size: 16px;
+  height: 47px;
   text-align: right;
   width: 100%;
 
@@ -48,6 +49,8 @@
 
 .project-list td.check:before {
   content: "";
+  display: block;
+  margin-top: 16px;
 }
 
 .project-list td.check:hover:before,

@@ -2,6 +2,11 @@ table.table {
   text-align: center;
 }
 
+.table td {
+  padding: 0 10px;
+  vertical-align: middle;
+}
+
 .table tbody tr:hover {
   background: #333941;
 }
@@ -38,8 +43,6 @@ table.table {
 }
 
 .table h3 {
-  height: 22px; /* Needed to avoid cutting off text due to overflow: hidden; */
-  margin-bottom: -5px; /* Needed to avoid cutting off text due to overflow: hidden; */
   overflow: hidden;
   padding-left: 1px; /* Needed to avoid cutting off text due to overflow: hidden; */
   text-align: left;
@@ -57,7 +60,8 @@ table.table {
 
 .table h3 a {
   font-size: 15px;
-  line-height: 13px;
+  line-height: 47px;
+  padding: 12px 0 11px;
 }
 
 .table a {
@@ -88,6 +92,10 @@ table.table {
   margin-top: 2px;
 }
 
+.table .latest-activity a {
+  padding: 14px 0 13px;
+}
+
 .table .progress .not-ready {
   font-style: italic;
 }
@@ -100,7 +108,7 @@ table.table {
   display: table;
   font-size: 0;
   height: 3px;
-  margin-top: 7px;
+  margin-top: 2px;
   table-layout: fixed;
   width: 320px;
 }
